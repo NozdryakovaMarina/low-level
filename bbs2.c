@@ -10,15 +10,15 @@ int main() {
 	unsigned int x;
 	printf("Enter the starting number: ");
 	(void)scanf("%u", &x);
+	unsigned int low_byte;
 	int i = 0;
 
 cycle_start:
-	if (i == n) goto cycle_end; {
+	if (i == n) goto cycle_end; 
 		x = (x * x) % m;
-		unsigned int low_byte = x & 0xFF;
+		low_byte = x & 0xFF;
 		printf("%u\n", low_byte);
 		i = i + 1;
-	}
 goto cycle_start;
 cycle_end:
 	return 0;
