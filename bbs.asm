@@ -1,35 +1,37 @@
 %include "io64.inc"
 
+section .rodata
+   p:     dd 259
+   q:     dd 563
+   n:     dd 100
+   msg:   db "Generated numbers: ", 10, 0  
 
-section .data
-   p     dd 259
-   q     dd 563
-   m     dd 0 
-   n     dd 100
-   msg   db "Generated numbers: ", 10, 0  
-
-section .text
-   extern printf, scanf
+section .bss
+   m:  resd 4
+   
+section .text 
    global main
 
 main:
-    mov rbp, rsp; for correct debugging 
    GET_UDEC 4, r8d
    PRINT_STRING msg 
     
    mov eax, [p]
-   imul eax, [q]
+   mul dword [q]
    mov [m], eax 
     
    xor r10d, r10d
 .cycle_start: 
    cmp r10d, [n]
-   je .cycle_end
+   jnl .cycle_end
      
-   mov r9d, r8d
-   imul r9d, r9d
+   mov eax, r8d
+   mov edx, r8d
+   mul eax
+   
+   mov r9d, eax
 
-   mov eax, r9d 
+   mov eax, r9d
    xor edx, edx
    mov ebx, [m]
    div ebx

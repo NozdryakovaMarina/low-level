@@ -3,9 +3,9 @@
 
 int main() {
 
-	int p = 259;
-	int q = 563; 
-	int m = p * q;
+	const int p = 259;
+	const int q = 563; 
+	unsigned int m = p * q;
 	int n = 100; 
 
 	unsigned int x;
