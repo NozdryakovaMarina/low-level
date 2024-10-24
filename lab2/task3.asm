@@ -3,7 +3,7 @@
 ; 2 b ^ arctg a - 
 section .rodata
     a:  dd 5.0
-    b:  dd 3.0 
+    b:  dd 3.2 
 
 section .bss
     x: resd 1
@@ -11,15 +11,19 @@ section .bss
 section .text 
 global main
 
-main:
-    fld dword [b] 
-    fld1
-    fscale  
+main: 
+    fld dword[b]
+    fld1 
+    fscale
+    fld1 
+    fld dword[b] 
+    fprem
+    f2xm1
+    fadd
+    fmul st1
     fld1
     fpatan
-    fld dword [a]
-    fsub
+    fsub dword[a]
     fstp dword [x]     
-    
-    xor rax, rax 
+     
     ret
