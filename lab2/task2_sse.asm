@@ -1,9 +1,8 @@
+%include "io64.inc" 
 section .rodata
-  angle: dd 30.0
+  angle: dd 60.0
   const: dd 180.0
-  pi:    dd 3.141592653589793
-  fact3: dd 6.0
-  fact5: dd 120.0 
+  pi:    dd 3.141592653589793 
 
 section .bss
   sin: resd 1 
@@ -17,24 +16,43 @@ main:
     movss xmm1, dword[const]
     divss xmm0, xmm1 ;xmm0 = угол в радианах = x
     
-    movss xmm1, xmm0
-    mulss xmm1, xmm1
-    mulss xmm1, xmm0 ;xmm1=x^3
+    movss xmm7, xmm0  
     
-    movss xmm2, xmm1 
-    movss xmm3, dword[fact3]
-    divss xmm2, xmm3
-    movss xmm3, xmm0
-    subss xmm3, xmm2 ;xmm3=x-(x^3)/6
+    mov eax, 1
+    cvtsi2ss xmm1, eax
     
-    movss xmm4, xmm1
-    mulss xmm4, xmm0  
-    mulss xmm4, xmm0
-    movss xmm5, dword[fact5]
-    divss xmm4, xmm5
-    addss xmm3, xmm4 ;xmm3 - конечный результат = sin(x)
+    mov eax, 2
+    cvtsi2ss xmm2, eax
     
-    movss dword[sin], xmm3
+    mov eax, -1
+    cvtsi2ss xmm3, eax
     
-    xor rax, rax
-    ret
+    movss xmm9, xmm0 ; prev
+    
+    mulss xmm0, xmm0 
+    
+    mov ecx, 2
+    
+.start:
+    mulss xmm3, xmm0; xmm3 = (-1)x^2
+    mulss xmm3, xmm9; xmm3 = (-1)*(x^2)*A_n-1
+    
+    cvtsi2ss xmm4, ecx
+    mulss xmm2, xmm4; xmm2 = 2n
+    subss xmm2, xmm1; xmm2 = 2n-1
+    divss xmm3, xmm2; xmm3 = (-1)*(x^2)*A_n-1/(2n-1)
+    
+    subss xmm2, xmm1; xmm2 = 2n-2
+    divss xmm3, xmm2; xmm3 = (-1)*(x^2)*A_n-1/((2n-1)*(2n-2)) 
+    
+    addss xmm7, xmm3
+    
+    cmp ecx, 4
+    je .end
+    
+    inc ecx
+    
+    jmp .start
+    
+.end:   
+   ret

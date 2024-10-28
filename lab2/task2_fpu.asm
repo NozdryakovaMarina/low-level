@@ -2,9 +2,7 @@ section .rodata
   angle: dd 30.0
   const: dd 180.0
   fact3: dd 6.0
-  fact5: dd 120.0
-  deg3:  dd 3.0
-  deg5: dd  5.0 
+  fact5: dd 120.0 
 
 section .bss
   sin: resd 1

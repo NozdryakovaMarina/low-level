@@ -5,7 +5,7 @@
 section .rodata
    a: dd 7.0
    x: dd 0.5
-   y: dd 0.0
+   y: dd 0.5
    
 section .data
    result: dd 0.0
@@ -35,7 +35,5 @@ main:
 false:
     PRINT_DEC 4, 0
 
-end:
-   fstp st0
-   xor rax, rax
+end: 
    ret	
